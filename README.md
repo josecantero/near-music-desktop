@@ -1,6 +1,6 @@
 <div align="center">
 
-# :pear: Near Desktop
+# :round_pushpin: Near Desktop
 
 [![GitHub release](https://img.shields.io/github/release/pear-devs/pear-desktop.svg?style=for-the-badge)](https://github.com/pear-devs/pear-desktop/releases/)
 [![GitHub license](https://img.shields.io/github/license/pear-devs/pear-desktop.svg?style=for-the-badge)](https://github.com/pear-devs/pear-desktop/blob/master/license)
