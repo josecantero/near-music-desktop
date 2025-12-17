@@ -106,11 +106,11 @@ importers:
         specifier: 3.2.0
         version: 3.2.0
       butterchurn:
-        specifier: 3.0.0-beta.5
-        version: 3.0.0-beta.5
+        specifier: ^2.6.7
+        version: 2.6.7
       butterchurn-presets:
-        specifier: 3.0.0-beta.4
-        version: 3.0.0-beta.4
+        specifier: file:local_modules/butterchurn-presets
+        version: file:local_modules/butterchurn-presets
       color:
         specifier: 5.0.0
         version: 5.0.0
@@ -186,6 +186,9 @@ importers:
       keyboardevents-areequal:
         specifier: 0.2.2
         version: 0.2.2
+      koffi:
+        specifier: ^2.14.1
+        version: 2.14.1
       kuromoji:
         specifier: 0.1.2
         version: 0.1.2(patch_hash=4a948f1ea45c61779fa371feb020253ccf7a24e1f7c6b2e250b3ce53d86216d4)
@@ -382,9 +385,6 @@ packages:
   '@ampproject/remapping@2.3.0':
     resolution: {integrity: sha512-30iZtAPgz+LTIYoeivqYo853f02jBYSd5uGnGpkFV0M3xOt9aN73erkgYAmZU43x4VfqcnLxW9Kpg3R5LC4YYw==}
     engines: {node: '>=6.0.0'}
-
-  '@assemblyscript/loader@0.17.14':
-    resolution: {integrity: sha512-+PVTOfla/0XMLRTQLJFPg4u40XcdTfon6GGea70hBGi8Pd7ZymIXyVUR+vK8wt5Jb4MVKTKPIz43Myyebw5mZA==}
 
   '@asteasolutions/zod-to-openapi@8.1.0':
     resolution: {integrity: sha512-tQFxVs05J/6QXXqIzj6rTRk3nj1HFs4pe+uThwE95jL5II2JfpVXkK+CqkO7aT0Do5AYqO6LDrKpleLUFXgY+g==}
@@ -1755,6 +1755,9 @@ packages:
       solid-js:
         optional: true
 
+  babel-runtime@6.26.0:
+    resolution: {integrity: sha512-ITKNuq2wKlW1fJg9sSW52eepoYgZBggvOAHC0u/CYu/qxQ9EVzThCgR69BnSXLHjy2f7SY5zaQ4yt7H9ZVxY2g==}
+
   balanced-match@1.0.2:
     resolution: {integrity: sha512-3oSeUO0TMV67hN1AmbXsK4yaqU7tjiHlbxRDZOpH0KW9+CeX4bRAaX0Anxt0tx2MrpRpWwQaPwIlISEJhYU5Pw==}
 
@@ -1833,11 +1836,11 @@ packages:
     resolution: {integrity: sha512-tjwM5exMg6BGRI+kNmTntNsvdZS1X8BFYS6tnJ2hdH0kVxM6/eVZ2xy+FqStSWvYmtfFMDLIxurorHwDKfDz5Q==}
     engines: {node: '>=18'}
 
-  butterchurn-presets@3.0.0-beta.4:
-    resolution: {integrity: sha512-TbQLUPvGOYMZAtWKoCmBtludh9aQZ6NaMGQU4lvPeadBPy3Du3yNmwBjlTMLP5c5mRWElxQPjTL1PtR7FZK3OQ==}
+  butterchurn-presets@file:local_modules/butterchurn-presets:
+    resolution: {directory: local_modules/butterchurn-presets, type: directory}
 
-  butterchurn@3.0.0-beta.5:
-    resolution: {integrity: sha512-BStK4OAbBb9Pvt8PuQlS4WVmYBwU1KuDMRHF1V89QjoIFauAqq7tpV4EpYXj7K563r5daLrMX+2y5DBhZZ9Xig==}
+  butterchurn@2.6.7:
+    resolution: {integrity: sha512-BJiRA8L0L2+84uoG2SSfkp0kclBuN+vQKf217pK7pMlwEO2ZEg3MtO2/o+l8Qpr8Nbejg8tmL1ZHD1jmhiaaqg==}
 
   bytes@3.0.0:
     resolution: {integrity: sha512-pMhOfFDPiv9t5jjIXkHosWmkSyQbvsgEVNkz0ERHbuLh2T/7j4Mqqpz523Fe8MVY89KC6Sh/QfS2sM+SjgFDcw==}
@@ -2032,6 +2035,10 @@ packages:
 
   convert-source-map@2.0.0:
     resolution: {integrity: sha512-Kvp459HrV2FEJ1CAsi1Ku+MY3kasH19TFykTz2xWmMeq6bk2NU3XXvfJ+Q61m0xktWwt+1HSYf3JZsTms3aRJg==}
+
+  core-js@2.6.12:
+    resolution: {integrity: sha512-Kb2wC0fvsWfQrgk8HU5lW6U/Lcs8+9aaYcy4ZFc6DDlo4nZ7n70dEgE5rtR0oG6ufKDUnrwfWL1mXR5ljDatrQ==}
+    deprecated: core-js@<3.23.3 is no longer maintained and not recommended for usage due to the number of issues. Because of the V8 engine whims, feature detection in old core-js versions could cause a slowdown up to 100x even if nothing is polyfilled. Some versions have web compatibility issues. Please, upgrade your dependencies to the actual version of core-js.
 
   core-util-is@1.0.2:
     resolution: {integrity: sha512-3lqz5YjWTYnW6dlDa5TLaTCcShfar1e40rmcJVwCBJC6mWlFuj0eCHIElmG1g5kyuJ/GD+8Wn4FFCcz4gJPfaQ==}
@@ -2247,9 +2254,6 @@ packages:
 
   ecma-proposal-math-extensions@0.0.2:
     resolution: {integrity: sha512-80BnDp2Fn7RxXlEr5HHZblniY4aQ97MOAicdWWpSo0vkQiISSE9wLR4SqxKsu4gCtXFBIPPzy8JMhay4NWRg/Q==}
-
-  eel-wasm@0.0.16:
-    resolution: {integrity: sha512-1tkId7I7E1Vs4fXTRsH83Sjn2S/AbzrVQKLBRGys6NLc3eVH4NBffJsdEeLHOWWUgQpVXBEP3CV/srUZNIuBnw==}
 
   ejs@3.1.10:
     resolution: {integrity: sha512-UeJmFfOrAQS8OJWPZ4qtgHyWExa088/MtK5UEyoJGFH67cDEXkZSviOiKRCZ4Xij0zxI3JECgYs3oKx+AizQBA==}
@@ -3286,6 +3290,9 @@ packages:
   known-css-properties@0.30.0:
     resolution: {integrity: sha512-VSWXYUnsPu9+WYKkfmJyLKtIvaRJi1kXUqVmBACORXZQxT5oZDsoZ2vQP+bQFDnWtpI/4eq3MLoRMjI2fnLzTQ==}
 
+  koffi@2.14.1:
+    resolution: {integrity: sha512-IMFL3IbRDXacSIjs7pPbPxgNlJ2hUtawQXU2QPdr6iw38jmv5AesAUG8HPX00xl0PPA2BbEa3noTw1YdHY+gHg==}
+
   kuromoji@0.1.2:
     resolution: {integrity: sha512-V0dUf+C2LpcPEXhoHLMAop/bOht16Dyr+mDiIE39yX3vqau7p80De/koFqpiTcL1zzdZlc3xuHZ8u5gjYRfFaQ==}
 
@@ -4021,6 +4028,9 @@ packages:
   reflect.getprototypeof@1.0.10:
     resolution: {integrity: sha512-00o4I+DVrefhv+nX0ulyi3biSHCPDe+yLv5o/p6d/UVlirijB8E16FtfwSAi4g3tcqrQ4lRAqQSoFEZJehYEcw==}
     engines: {node: '>= 0.4'}
+
+  regenerator-runtime@0.11.1:
+    resolution: {integrity: sha512-MguG95oij0fC3QV3URf4V2SDYGJhJnJGqvIIgdECeODCT98wSWDAJ94SSuVpYQUoTcGUIL6L4yNB7j1DFFHSBg==}
 
   regenerator-runtime@0.13.11:
     resolution: {integrity: sha512-kY1AZVr2Ra+t+piVaJ4gxaFaReZVH40AKNo7UCX6W+dEwBo/2oZJzqfuN1qLq1oL45o56cPaTXELwrTh8Fpggg==}
@@ -4899,8 +4909,6 @@ snapshots:
     dependencies:
       '@jridgewell/gen-mapping': 0.3.13
       '@jridgewell/trace-mapping': 0.3.30
-
-  '@assemblyscript/loader@0.17.14': {}
 
   '@asteasolutions/zod-to-openapi@8.1.0(zod@4.1.5)':
     dependencies:
@@ -6437,6 +6445,11 @@ snapshots:
     optionalDependencies:
       solid-js: 1.9.9
 
+  babel-runtime@6.26.0:
+    dependencies:
+      core-js: 2.6.12
+      regenerator-runtime: 0.11.1
+
   balanced-match@1.0.2: {}
 
   base64-js@1.5.1: {}
@@ -6546,15 +6559,16 @@ snapshots:
     dependencies:
       run-applescript: 7.0.0
 
-  butterchurn-presets@3.0.0-beta.4:
+  butterchurn-presets@file:local_modules/butterchurn-presets:
+    dependencies:
+      babel-runtime: 6.26.0
+      ecma-proposal-math-extensions: 0.0.2
+      lodash: 4.17.21
+
+  butterchurn@2.6.7:
     dependencies:
       '@babel/runtime': 7.28.4
-
-  butterchurn@3.0.0-beta.5:
-    dependencies:
-      '@assemblyscript/loader': 0.17.14
       ecma-proposal-math-extensions: 0.0.2
-      eel-wasm: 0.0.16
 
   bytes@3.0.0: {}
 
@@ -6770,6 +6784,8 @@ snapshots:
   content-disposition@0.5.2: {}
 
   convert-source-map@2.0.0: {}
+
+  core-js@2.6.12: {}
 
   core-util-is@1.0.2:
     optional: true
@@ -7009,8 +7025,6 @@ snapshots:
   eastasianwidth@0.2.0: {}
 
   ecma-proposal-math-extensions@0.0.2: {}
-
-  eel-wasm@0.0.16: {}
 
   ejs@3.1.10:
     dependencies:
@@ -8266,6 +8280,8 @@ snapshots:
 
   known-css-properties@0.30.0: {}
 
+  koffi@2.14.1: {}
+
   kuromoji@0.1.2(patch_hash=4a948f1ea45c61779fa371feb020253ccf7a24e1f7c6b2e250b3ce53d86216d4):
     dependencies:
       async: 2.6.4
@@ -8980,6 +8996,8 @@ snapshots:
       get-intrinsic: 1.3.0
       get-proto: 1.0.1
       which-builtin-type: 1.2.1
+
+  regenerator-runtime@0.11.1: {}
 
   regenerator-runtime@0.13.11: {}
 

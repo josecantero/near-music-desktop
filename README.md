@@ -283,7 +283,39 @@ Uses [Playwright](https://playwright.dev/) to test the app.
 
 MIT © [pear-devs](https://github.com/pear-devs/pear-desktop)
 
-## FAQ
+## Troubleshooting
+ 
+ ### `ENAMETOOLONG` error during installation
+ 
+ If you encounter an error like `ENAMETOOLONG: name too long` during `pnpm install` or `pnpm start`, it is likely due to the `butterchurn-presets` package containing files with excessively long names that some operating systems/filesystems cannot handle deeply nested in `node_modules`.
+ 
+ **Solution:**
+ This project works around this by using a local vendored copy of `butterchurn-presets` in `local_modules/`.
+ 
+ To reproduce this fix (if you need to update the dependency):
+ 
+ 1. Download the package manually:
+    ```bash
+    npm pack butterchurn-presets
+    ```
+ 
+ 2. Extract it to a local directory (ignoring errors about long filenames, as the minified bundles are what matters):
+    ```bash
+    mkdir -p local_modules/butterchurn-presets
+    tar -xzf butterchurn-presets-2.4.7.tgz -C local_modules/butterchurn-presets --strip-components=1
+    ```
+ 
+ 3. Point `package.json` to the local folder:
+    ```json
+    "dependencies": {
+      "butterchurn-presets": "file:local_modules/butterchurn-presets",
+      ...
+    }
+    ```
+ 
+ 4. Run `pnpm install`.
+ 
+ ## FAQ
 
 ### Why apps menu isn't showing up?
 
