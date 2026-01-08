@@ -10,32 +10,41 @@ const COLOR_KEY = '--ytmusic-album-color';
 const DARK_COLOR_KEY = '--ytmusic-album-color-dark';
 const RATIO_KEY = '--ytmusic-album-color-ratio';
 
-type Config = {
-  enabled: boolean;
-  ratio: number;
-  enableSeekbar: boolean;
-};
+export default createPlugin<
+  unknown,
+  unknown,
+  {
+    color?: ColorInstance;
+    darkColor?: ColorInstance;
 
-type Renderer = {
-  getMixedColor(
-    color: string,
-    key: string,
-    alpha?: number,
-    ratioMultiply?: number,
-  ): string;
-  updateColor(alpha: number): void;
-  onConfigChange(newConfig: Config): void;
-};
+    playerPage: HTMLElement | null;
+    navBarBackground: HTMLElement | null;
+    ytmusicPlayerBar: HTMLElement | null;
+    playerBarBackground: HTMLElement | null;
+    sidebarBig: HTMLElement | null;
+    sidebarSmall: HTMLElement | null;
+    ytmusicAppLayout: HTMLElement | null;
 
-export default createPlugin({
+    getMixedColor(
+      color: string,
+      key: string,
+      alpha?: number,
+      ratioMultiply?: number,
+    ): string;
+    updateColor(alpha: number): void;
+  },
+  {
+    enabled: boolean;
+    ratio: number;
+  }
+>({
   name: () => t('plugins.album-color-theme.name'),
   description: () => t('plugins.album-color-theme.description'),
   restartNeeded: false,
   config: {
     enabled: false,
     ratio: 0.5,
-    enableSeekbar: true,
-  } satisfies Config as Config,
+  },
   stylesheets: [style],
   menu: async ({ getConfig, setConfig }) => {
     const ratioList = [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1];
@@ -59,28 +68,18 @@ export default createPlugin({
           },
         })),
       },
-      {
-        label: t('plugins.album-color-theme.menu.enable-seekbar'),
-        type: 'checkbox',
-        checked: config.enableSeekbar,
-        click(item) {
-          setConfig({ enableSeekbar: item.checked });
-        },
-      },
     ];
   },
   renderer: {
-    playerPage: null as HTMLElement | null,
-    navBarBackground: null as HTMLElement | null,
-    ytmusicPlayerBar: null as HTMLElement | null,
-    playerBarBackground: null as HTMLElement | null,
-    sidebarBig: null as HTMLElement | null,
-    sidebarSmall: null as HTMLElement | null,
-    ytmusicAppLayout: null as HTMLElement | null,
-    color: null as ColorInstance | null,
-    darkColor: null as ColorInstance | null,
+    playerPage: null,
+    navBarBackground: null,
+    ytmusicPlayerBar: null,
+    playerBarBackground: null,
+    sidebarBig: null,
+    sidebarSmall: null,
+    ytmusicAppLayout: null,
 
-    start() {
+    async start({ getConfig }) {
       this.playerPage = document.querySelector<HTMLElement>('#player-page');
       this.navBarBackground = document.querySelector<HTMLElement>(
         '#nav-bar-background',
@@ -95,11 +94,14 @@ export default createPlugin({
         '#mini-guide-background',
       );
       this.ytmusicAppLayout = document.querySelector<HTMLElement>('#layout');
-    },
-    async onPlayerApiReady(playerApi, { getConfig }) {
-      const config = await getConfig();
-      (this as Renderer).onConfigChange(config);
 
+      const config = await getConfig();
+      document.documentElement.style.setProperty(
+        RATIO_KEY,
+        `${~~(config.ratio * 100)}%`,
+      );
+    },
+    onPlayerApiReady(playerApi) {
       const fastAverageColor = new FastAverageColor();
 
       document.addEventListener('videodatachange', async (event) => {
@@ -150,7 +152,7 @@ export default createPlugin({
             alpha = value;
           }
         }
-        (this as Renderer).updateColor(alpha ?? 1);
+        this.updateColor(alpha ?? 1);
       });
     },
     onConfigChange(config) {
@@ -158,15 +160,8 @@ export default createPlugin({
         RATIO_KEY,
         `${~~(config.ratio * 100)}%`,
       );
-      if (config.enableSeekbar) document.body.classList.add('seekbar-theme');
-      else document.body.classList.remove('seekbar-theme');
     },
-    getMixedColor(
-      color: string,
-      key: string,
-      alpha = 1,
-      ratioMultiply?: number,
-    ) {
+    getMixedColor(color: string, key: string, alpha = 1, ratioMultiply) {
       const keyColor = `rgba(var(${key}), ${alpha})`;
 
       let colorRatio = `var(${RATIO_KEY}, 50%)`;
@@ -212,39 +207,26 @@ export default createPlugin({
         '--yt-spec-black-pure-alpha-80': 'rgba(0,0,0,0.8)',
         '--yt-spec-black-1-alpha-98': 'rgba(40,40,40,0.98)',
         '--yt-spec-black-1-alpha-95': 'rgba(40,40,40,0.95)',
-        '--paper-toast-background-color': '#323232',
-        '--ytmusic-search-background': '#030303',
-        '--paper-slider-knob-color': '#f03',
-        '--paper-dialog-background-color': '#212121',
-        '--paper-progress-active-color-1': '#f03',
-        '--paper-progress-active-color-2': '#ff2791',
-        '--yt-spec-inverted-background': '#f3f3f3',
-        'background': 'rgba(3, 3, 3)',
-        '--ytmusic-background': 'rgba(3, 3, 3)',
       };
-
-      const colorKeyMap: Record<string, string> = {
-        'background': DARK_COLOR_KEY,
-        '--ytmusic-background': DARK_COLOR_KEY,
-      };
-
-      const ratioMap: Record<string, number> = {
-        '--paper-progress-active-color-1': 1.75,
-        '--paper-progress-active-color-2': 1.75,
-        '--yt-spec-inverted-background': 1.75,
-      };
-
-      const getMixedColor = (this as Renderer).getMixedColor.bind(this);
       Object.entries(variableMap).map(([variable, color]) => {
-        const key = colorKeyMap[variable] ?? COLOR_KEY;
-        const ratio = ratioMap[variable] ?? undefined;
-
         document.documentElement.style.setProperty(
           variable,
-          getMixedColor(color, key, alpha, ratio),
+          this.getMixedColor(color, COLOR_KEY, alpha),
           'important',
         );
       });
+
+      document.body.style.setProperty(
+        'background',
+        this.getMixedColor('rgba(3, 3, 3)', DARK_COLOR_KEY, alpha),
+        'important',
+      );
+      document.documentElement.style.setProperty(
+        '--ytmusic-background',
+        // #030303
+        this.getMixedColor('rgba(3, 3, 3)', DARK_COLOR_KEY, alpha),
+        'important',
+      );
     },
   },
 });

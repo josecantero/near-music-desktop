@@ -57,7 +57,7 @@ export default createPlugin({
       const config = await getConfig();
 
       document.addEventListener(
-        'peard:audio-can-play',
+        'ytmd:audio-can-play',
         ({ detail: { audioSource, audioContext } }) => {
           const filtersToApply = config.filters.concat(
             defaultPresets

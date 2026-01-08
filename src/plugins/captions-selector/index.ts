@@ -7,7 +7,7 @@ import renderer, {
   type LanguageOptions,
 } from './renderer';
 
-import type { MusicPlayer } from '@/types/music-player';
+import type { YoutubePlayer } from '@/types/youtube-player';
 
 export default createPlugin<
   unknown,
@@ -15,7 +15,7 @@ export default createPlugin<
   {
     captionsSettingsButton?: HTMLElement;
     captionTrackList: LanguageOptions[] | null;
-    api: MusicPlayer | null;
+    api: YoutubePlayer | null;
     config: CaptionsSelectorConfig | null;
     videoChangeListener: () => void;
   },

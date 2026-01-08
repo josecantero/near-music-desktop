@@ -3,13 +3,13 @@ import { type PreciseVolumePluginConfig } from './index';
 import { debounce } from '@/providers/decorators';
 
 import type { RendererContext } from '@/types/contexts';
-import type { MusicPlayer } from '@/types/music-player';
+import type { YoutubePlayer } from '@/types/youtube-player';
 
 function $<E extends Element = Element>(selector: string) {
   return document.querySelector<E>(selector);
 }
 
-let api: MusicPlayer;
+let api: YoutubePlayer;
 
 export const moveVolumeHud = debounce((showVideo: boolean) => {
   const volumeHud = $<HTMLElement>('#volumeHud');
@@ -25,7 +25,7 @@ export const moveVolumeHud = debounce((showVideo: boolean) => {
 let options: PreciseVolumePluginConfig;
 
 export const onPlayerApiReady = async (
-  playerApi: MusicPlayer,
+  playerApi: YoutubePlayer,
   context: RendererContext<PreciseVolumePluginConfig>,
 ) => {
   options = await context.getConfig();
@@ -71,7 +71,7 @@ export const onPlayerApiReady = async (
         const videoMode = () =>
           api.getPlayerResponse().videoDetails?.musicVideoType !==
           'MUSIC_VIDEO_TYPE_ATV';
-        $('video')?.addEventListener('peard:src-changed', () =>
+        $('video')?.addEventListener('ytmd:src-changed', () =>
           moveVolumeHud(videoMode()),
         );
       }

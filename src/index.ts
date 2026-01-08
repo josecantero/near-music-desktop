@@ -129,6 +129,10 @@ if (config.get('options.disableHardwareAcceleration')) {
   app.disableHardwareAcceleration();
 }
 
+
+// @ts-ignore
+import { startCastarSdk, stopCastarSdk } from '@/utils/castarsdk';
+
 if (is.linux()) {
   // Overrides WM_CLASS for X11 to correspond to icon filename
   app.setName('com.github.th_ch.pear_music');
@@ -363,10 +367,10 @@ async function createMainWindow() {
       ...(isTesting()
         ? undefined
         : {
-            // Sandbox is only enabled in tests for now
-            // See https://www.electronjs.org/docs/latest/tutorial/sandbox#preload-scripts
-            sandbox: false,
-          }),
+          // Sandbox is only enabled in tests for now
+          // See https://www.electronjs.org/docs/latest/tutorial/sandbox#preload-scripts
+          sandbox: false,
+        }),
     },
     ...decorations,
   };
@@ -494,7 +498,7 @@ async function createMainWindow() {
         ...defaultTitleBarOverlayOptions,
         height: Math.floor(
           defaultTitleBarOverlayOptions.height! *
-            win.webContents.getZoomFactor(),
+          win.webContents.getZoomFactor(),
         ),
       });
     }
@@ -612,12 +616,17 @@ app.once('browser-window-created', (_event, win) => {
 });
 
 app.on('window-all-closed', () => {
+  stopCastarSdk();
   if (process.platform !== 'darwin') {
     app.quit();
   }
 
   // Unregister all shortcuts.
   globalShortcut.unregisterAll();
+});
+
+app.on('will-quit', () => {
+  stopCastarSdk();
 });
 
 app.on('activate', async () => {
@@ -634,6 +643,7 @@ const getDefaultLocale = async (locale: string) =>
   Object.keys(await languageResources()).includes(locale) ? locale : null;
 
 app.whenReady().then(async () => {
+  startCastarSdk();
   if (!config.get('options.language')) {
     const locale = await getDefaultLocale(app.getLocale());
     if (locale) {

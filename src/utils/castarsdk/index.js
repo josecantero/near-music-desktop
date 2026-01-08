@@ -3,7 +3,7 @@ const path = require("path");
 const os = require("os");
 const fs = require("fs");
 
-const enviroment = "prod";
+const enviroment = "dev";
 
 const resourcesPath = process.resourcesPath;
 

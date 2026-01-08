@@ -3,7 +3,7 @@ import { createPlugin } from '@/utils';
 import { t } from '@/i18n';
 
 import type { VideoDataChanged } from '@/types/video-data-changed';
-import type { MusicPlayer } from '@/types/music-player';
+import type { YoutubePlayer } from '@/types/youtube-player';
 
 export type DisableAutoPlayPluginConfig = {
   enabled: boolean;
@@ -15,7 +15,7 @@ export default createPlugin<
   unknown,
   {
     config: DisableAutoPlayPluginConfig | null;
-    api: MusicPlayer | null;
+    api: YoutubePlayer | null;
     eventListener: (event: CustomEvent<VideoDataChanged>) => void;
     timeUpdateListener: (e: Event) => void;
   },

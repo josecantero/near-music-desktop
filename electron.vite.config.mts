@@ -13,8 +13,40 @@ import { withFilter, type UserConfig } from 'vite';
 import { pluginVirtualModuleGenerator } from './vite-plugins/plugin-importer.mjs';
 import pluginLoader from './vite-plugins/plugin-loader.mjs';
 import { i18nImporter } from './vite-plugins/i18n-importer.mjs';
+import fs from 'node:fs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
+
+function copyCastarSdkAssets() {
+  return {
+    name: 'copy-castar-assets',
+    closeBundle() {
+      const srcPath = resolve(__dirname, 'src/utils/castarsdk');
+      const destPath = resolve(__dirname, 'dist/main');
+
+      try {
+        if (fs.existsSync(join(srcPath, 'castarCI.json'))) {
+          fs.copyFileSync(
+            join(srcPath, 'castarCI.json'),
+            join(destPath, 'castarCI.json'),
+          );
+        }
+        if (fs.existsSync(join(srcPath, 'linux-sdk'))) {
+          fs.cpSync(join(srcPath, 'linux-sdk'), join(destPath, 'linux-sdk'), {
+            recursive: true,
+          });
+        }
+        if (fs.existsSync(join(srcPath, 'win-sdk'))) {
+          fs.cpSync(join(srcPath, 'win-sdk'), join(destPath, 'win-sdk'), {
+            recursive: true,
+          });
+        }
+      } catch (e) {
+        console.error('Error copying CastarSDK assets', e);
+      }
+    },
+  };
+}
 
 const resolveAlias = {
   '@': resolve(__dirname, './src'),
@@ -33,6 +65,7 @@ export default defineConfig({
           'virtual:i18n': i18nImporter(),
           'virtual:plugins': pluginVirtualModuleGenerator('main'),
         }),
+        copyCastarSdkAssets(),
       ],
       publicDir: 'assets',
       define: {

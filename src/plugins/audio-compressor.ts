@@ -1,6 +1,6 @@
 import { createPlugin } from '@/utils';
 import { t } from '@/i18n';
-import { type MusicPlayer } from '@/types/music-player';
+import { type YoutubePlayer } from '@/types/youtube-player';
 
 const lazySafeTry = (...fns: (() => void)[]) => {
   for (const fn of fns) {
@@ -95,7 +95,7 @@ const audioCanPlayHandler = ({
   );
 };
 
-const ensureAudioContextLoad = (playerApi: MusicPlayer) => {
+const ensureAudioContextLoad = (playerApi: YoutubePlayer) => {
   if (playerApi.getPlayerState() !== 1 || storage.lastContext) return;
 
   playerApi.loadVideoById(
@@ -115,7 +115,7 @@ export default createPlugin({
     },
 
     start() {
-      document.addEventListener('peard:audio-can-play', audioCanPlayHandler, {
+      document.addEventListener('ytmd:audio-can-play', audioCanPlayHandler, {
         passive: true,
       });
       storage.connectToCompressor(
@@ -126,7 +126,7 @@ export default createPlugin({
     },
 
     stop() {
-      document.removeEventListener('peard:audio-can-play', audioCanPlayHandler);
+      document.removeEventListener('ytmd:audio-can-play', audioCanPlayHandler);
       storage.disconnectCompressor();
     },
   },

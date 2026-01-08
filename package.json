@@ -124,6 +124,7 @@
     "peerjs": "1.5.5",
     "semver": "7.7.2",
     "serve": "14.2.5",
+    "simple-youtube-age-restriction-bypass": "^2.5.2",
     "socks": "2.8.7",
     "solid-element": "1.9.1",
     "solid-floating-ui": "0.3.1",
